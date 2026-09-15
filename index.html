@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+
     <meta name="viewport"
           content="width=device-width,
                    initial-scale=1.0,
@@ -10,37 +11,361 @@
 
     <title>Prince Raj Live</title>
 
-    <link rel="stylesheet" href="style.css">
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #000;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        /* FULL SCREEN PLAYER */
+
+        .player {
+            position: fixed;
+
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+
+            background: #000;
+
+            overflow: hidden;
+        }
+
+        /* IFRAME */
+
+        #liveFrame {
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 100%;
+
+            border: none;
+            outline: none;
+
+            background: #000;
+
+            display: block;
+        }
+
+        /* LOADING */
+
+        .loading {
+            position: absolute;
+
+            top: 50%;
+            left: 50%;
+
+            transform: translate(-50%, -50%);
+
+            color: white;
+
+            font-size: 15px;
+
+            background: rgba(0, 0, 0, 0.75);
+
+            padding: 12px 20px;
+
+            border-radius: 10px;
+
+            z-index: 5;
+
+            pointer-events: none;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* ERROR */
+
+        .error {
+            position: absolute;
+
+            top: 50%;
+            left: 50%;
+
+            transform: translate(-50%, -50%);
+
+            width: 90%;
+            max-width: 450px;
+
+            text-align: center;
+
+            color: white;
+
+            background: #111;
+
+            border: 1px solid #292929;
+
+            padding: 25px;
+
+            border-radius: 14px;
+
+            z-index: 10;
+        }
+
+        .error h2 {
+            margin-bottom: 8px;
+            color: #ff4040;
+        }
+
+        .error p {
+            color: #aaa;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 600px) {
+
+            .player {
+                width: 100vw;
+                height: 100dvh;
+            }
+
+            #liveFrame {
+                width: 100vw;
+                height: 100dvh;
+            }
+
+        }
+
+    </style>
 </head>
+
 
 <body>
 
     <div class="player">
+
+        <!-- Loading message -->
+
+        <div
+            id="loading"
+            class="loading">
+            Loading Live Stream...
+        </div>
+
+
+        <!-- Video / Embed -->
+
         <iframe
             id="liveFrame"
-            allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
+
+            allow="
+                autoplay;
+                encrypted-media;
+                fullscreen;
+                picture-in-picture
+            "
+
             allowfullscreen
+
             webkitallowfullscreen
+            mozallowfullscreen
+
             scrolling="no">
+
         </iframe>
+
+
+        <!-- Error -->
+
+        <div
+            id="error"
+            class="error hidden">
+
+            <h2>Unable to Load</h2>
+
+            <p>
+                No valid stream/embed URL was provided,
+                or the source does not allow embedding.
+            </p>
+
+        </div>
+
     </div>
 
-    <script>
-        const params = new URLSearchParams(
-            window.location.search
-        );
 
-        const iframeLink = params.get("id");
+    <script>
+
+        /*
+        ==========================================
+        GET SOURCE FROM ?id=
+        ==========================================
+        */
+
+        const params =
+            new URLSearchParams(
+                window.location.search
+            );
+
+
+        const iframeLink =
+            params.get("id");
+
 
         const iframe =
-            document.getElementById("liveFrame");
+            document.getElementById(
+                "liveFrame"
+            );
+
+
+        const loading =
+            document.getElementById(
+                "loading"
+            );
+
+
+        const error =
+            document.getElementById(
+                "error"
+            );
+
+
+        /*
+        ==========================================
+        LOAD SOURCE
+        ==========================================
+        */
 
         if (iframeLink) {
-            iframe.src = iframeLink;
+
+            try {
+
+                const decodedURL =
+                    decodeURIComponent(
+                        iframeLink
+                    );
+
+
+                /*
+                Basic URL validation
+                */
+
+                const url =
+                    new URL(decodedURL);
+
+
+                /*
+                Only HTTP/HTTPS sources
+                */
+
+                if (
+                    url.protocol === "https:" ||
+                    url.protocol === "http:"
+                ) {
+
+                    iframe.src =
+                        decodedURL;
+
+
+                    iframe.onload =
+                        function () {
+
+                            loading.classList
+                                .add("hidden");
+
+                        };
+
+
+                } else {
+
+                    loading.classList
+                        .add("hidden");
+
+                    error.classList
+                        .remove("hidden");
+
+                }
+
+
+            } catch (e) {
+
+                loading.classList
+                    .add("hidden");
+
+                error.classList
+                    .remove("hidden");
+
+            }
+
         } else {
-            iframe.src =
-                "https://crickettv.site/willow";
+
+            loading.classList
+                .add("hidden");
+
+            error.classList
+                .remove("hidden");
+
         }
+
+
+        /*
+        ==========================================
+        FULLSCREEN
+        ==========================================
+        */
+
+        window.addEventListener(
+            "message",
+            function(event) {
+
+                /*
+                This doesn't access the
+                iframe's internal DOM.
+                It only supports sources that
+                explicitly communicate with
+                the parent page.
+                */
+
+                if (
+                    event.data ===
+                    "requestFullscreen"
+                ) {
+
+                    const player =
+                        document.querySelector(
+                            ".player"
+                        );
+
+
+                    if (
+                        player.requestFullscreen
+                    ) {
+
+                        player.requestFullscreen();
+
+                    }
+
+                }
+
+            }
+        );
+
     </script>
 
 </body>
