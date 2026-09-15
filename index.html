@@ -2,171 +2,800 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<meta name="theme-color" content="#050505">
-<title>Princexmahto • Live</title>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.css">
+<meta name="viewport"
+      content="width=device-width,
+      initial-scale=1.0,
+      maximum-scale=1.0,
+      user-scalable=no">
+
+<meta name="theme-color" content="#050505">
+
+<title>princexmahto • Live</title>
+
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.css">
+
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.polyfilled.js"></script>
 
 <style>
-:root{--accent:#e50914}
-*{margin:0;padding:0;box-sizing:border-box}
-html,body{width:100%;height:100%;overflow:hidden;background:#000}
-body{font-family:Inter,Arial,sans-serif}
-.player-wrap{position:fixed;inset:0;background:#000;overflow:hidden}
-video{width:100%;height:100%;object-fit:contain;background:#000}
-.plyr{width:100%;height:100%;--plyr-color-main:var(--accent);--plyr-video-background:#000}
+
+:root{
+    --accent:#e50914;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html,
+body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#000;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+.player-wrap{
+    position:fixed;
+    inset:0;
+
+    width:100vw;
+    height:100vh;
+    height:100dvh;
+
+    background:#000;
+    overflow:hidden;
+}
+
+video{
+    width:100%;
+    height:100%;
+
+    object-fit:contain;
+
+    background:#000;
+}
+
+.plyr{
+    width:100%;
+    height:100%;
+
+    --plyr-color-main:var(--accent);
+    --plyr-video-background:#000;
+}
+
+
+/* =========================
+   BRAND
+========================= */
+
 .brand{
- position:absolute;top:18px;left:18px;z-index:30;
- display:flex;align-items:center;gap:9px;padding:9px 13px;
- color:#fff;background:rgba(0,0,0,.48);border:1px solid rgba(255,255,255,.16);
- border-radius:14px;backdrop-filter:blur(14px);pointer-events:none
+    position:absolute;
+
+    top:18px;
+    left:18px;
+
+    z-index:50;
+
+    display:flex;
+    align-items:center;
+
+    gap:9px;
+
+    padding:9px 14px;
+
+    color:#fff;
+
+    background:rgba(0,0,0,.45);
+
+    border:1px solid rgba(255,255,255,.18);
+
+    border-radius:15px;
+
+    backdrop-filter:blur(16px);
+    -webkit-backdrop-filter:blur(16px);
+
+    pointer-events:none;
+
+    box-shadow:
+        0 10px 35px rgba(0,0,0,.4);
 }
-.dot{width:8px;height:8px;border-radius:50%;background:#ff1744;box-shadow:0 0 14px #ff1744;animation:pulse 1.5s infinite}
-.name{font-weight:800;font-size:14px;letter-spacing:.3px}
-.live{font-size:10px;opacity:.7;letter-spacing:1px}
-@keyframes pulse{50%{opacity:.4;transform:scale(.75)}}
-.action{
- position:absolute;right:18px;top:18px;z-index:40;
- display:flex;align-items:center;gap:8px
+
+.dot{
+    width:8px;
+    height:8px;
+
+    border-radius:50%;
+
+    background:#ff1744;
+
+    box-shadow:
+        0 0 15px #ff1744;
+
+    animation:pulse 1.5s infinite;
 }
-.full-btn{
- width:52px;height:52px;border:1px solid rgba(255,255,255,.2);border-radius:16px;
- color:#fff;background:rgba(0,0,0,.58);backdrop-filter:blur(14px);
- cursor:pointer;font-size:23px;box-shadow:0 10px 30px rgba(0,0,0,.4)
+
+.name{
+    font-size:14px;
+
+    font-weight:800;
+
+    letter-spacing:.4px;
 }
-.full-btn:active{transform:scale(.94)}
-.hint{
- position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
- z-index:35;color:#fff;background:rgba(0,0,0,.72);border:1px solid rgba(255,255,255,.14);
- padding:14px 18px;border-radius:14px;font-size:13px;text-align:center;
- backdrop-filter:blur(12px);transition:.35s;pointer-events:none
+
+.live{
+    font-size:10px;
+
+    opacity:.65;
+
+    letter-spacing:1px;
 }
-.hint.hide{opacity:0;visibility:hidden}
-.bottom{
- position:absolute;left:18px;bottom:16px;z-index:30;color:rgba(255,255,255,.55);
- font-size:10px;letter-spacing:1.2px;pointer-events:none
+
+@keyframes pulse{
+
+    0%,100%{
+        opacity:1;
+        transform:scale(1);
+    }
+
+    50%{
+        opacity:.4;
+        transform:scale(.75);
+    }
+
 }
+
+
+/* =========================
+   FULLSCREEN BUTTON
+========================= */
+
+.fullscreen-button{
+
+    position:absolute;
+
+    right:18px;
+    top:18px;
+
+    z-index:100;
+
+    width:54px;
+    height:54px;
+
+    border-radius:16px;
+
+    border:1px solid
+    rgba(255,255,255,.22);
+
+    background:
+    rgba(0,0,0,.6);
+
+    color:#fff;
+
+    font-size:24px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    cursor:pointer;
+
+    backdrop-filter:blur(16px);
+
+    -webkit-backdrop-filter:blur(16px);
+
+    box-shadow:
+        0 10px 35px
+        rgba(0,0,0,.5);
+
+    transition:
+        .2s ease;
+}
+
+.fullscreen-button:hover{
+
+    transform:scale(1.08);
+
+    background:
+    rgba(255,255,255,.15);
+
+}
+
+.fullscreen-button:active{
+
+    transform:scale(.92);
+
+}
+
+
+/* =========================
+   LOADING
+========================= */
+
+.loading{
+
+    position:absolute;
+
+    left:50%;
+    top:50%;
+
+    transform:
+    translate(-50%,-50%);
+
+    z-index:60;
+
+    padding:14px 20px;
+
+    border-radius:14px;
+
+    color:#fff;
+
+    background:
+    rgba(0,0,0,.75);
+
+    border:1px solid
+    rgba(255,255,255,.15);
+
+    backdrop-filter:blur(14px);
+
+    font-size:13px;
+
+    transition:
+    opacity .35s,
+    visibility .35s;
+
+    pointer-events:none;
+}
+
+.loading.hide{
+
+    opacity:0;
+
+    visibility:hidden;
+}
+
+
+/* =========================
+   BOTTOM BRAND
+========================= */
+
+.bottom-brand{
+
+    position:absolute;
+
+    left:18px;
+    bottom:17px;
+
+    z-index:40;
+
+    color:
+    rgba(255,255,255,.55);
+
+    font-size:10px;
+
+    letter-spacing:1.3px;
+
+    pointer-events:none;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
 @media(max-width:600px){
- .brand{top:11px;left:11px;padding:8px 10px;border-radius:12px}
- .name{font-size:12px}.live{font-size:9px}
- .action{right:11px;top:11px}.full-btn{width:46px;height:46px;border-radius:14px}
- .bottom{left:11px;bottom:12px}
+
+    .brand{
+
+        top:11px;
+        left:11px;
+
+        padding:8px 11px;
+
+        border-radius:12px;
+    }
+
+    .name{
+        font-size:12px;
+    }
+
+    .live{
+        font-size:9px;
+    }
+
+    .fullscreen-button{
+
+        top:11px;
+        right:11px;
+
+        width:47px;
+        height:47px;
+
+        border-radius:14px;
+
+        font-size:21px;
+    }
+
+    .bottom-brand{
+
+        left:11px;
+        bottom:12px;
+
+        font-size:9px;
+    }
+
 }
+
 </style>
+
 </head>
 
+
 <body>
-<div class="player-wrap" id="playerWrap">
 
-  <video id="video" playsinline controls preload="metadata"></video>
 
-  <div class="brand">
-    <span class="dot"></span>
-    <span class="name">princexmahto</span>
-    <span class="live">LIVE</span>
-  </div>
+<div
+class="player-wrap"
+id="playerWrap">
 
-  <div class="action">
-    <button class="full-btn" id="fullBtn" type="button" aria-label="Fullscreen and sound">⛶</button>
-  </div>
 
-  <div class="hint" id="hint">
-    Loading live stream...
-  </div>
+    <!-- VIDEO -->
 
-  <div class="bottom">PRINCEXMAHTO • LIVE</div>
+    <video
+    id="video"
+    playsinline
+    controls
+    preload="metadata">
+    </video>
+
+
+    <!-- BRAND -->
+
+    <div class="brand">
+
+        <span class="dot"></span>
+
+        <span class="name">
+            princexmahto
+        </span>
+
+        <span class="live">
+            LIVE
+        </span>
+
+    </div>
+
+
+    <!-- FULLSCREEN -->
+
+    <button
+    class="fullscreen-button"
+    id="fullscreenButton"
+    type="button"
+    aria-label="Fullscreen and sound">
+
+        ⛶
+
+    </button>
+
+
+    <!-- LOADING -->
+
+    <div
+    class="loading"
+    id="loading">
+
+        Loading Live Stream...
+
+    </div>
+
+
+    <!-- BOTTOM -->
+
+    <div class="bottom-brand">
+
+        PRINCEXMAHTO • LIVE
+
+    </div>
+
+
 </div>
 
+
+
 <script>
-const video=document.getElementById("video");
-const wrap=document.getElementById("playerWrap");
-const fullBtn=document.getElementById("fullBtn");
-const hint=document.getElementById("hint");
 
-/*
- * Use only a stream URL that you own or are authorized to embed.
- * Replace this placeholder with your authorized HLS URL.
- */
-const SOURCE_URL="YOUR_AUTHORIZED_M3U8_URL";
 
-let plyrPlayer=null;
+/* ==========================================
+   ELEMENTS
+========================================== */
 
-function hideHint(){
-  hint.classList.add("hide");
-}
+const video =
+document.getElementById("video");
+
+const playerWrap =
+document.getElementById("playerWrap");
+
+const fullscreenButton =
+document.getElementById(
+    "fullscreenButton"
+);
+
+const loading =
+document.getElementById("loading");
+
+
+/* ==========================================
+   AUTHORIZED STREAM URL
+========================================== */
+
+const STREAM_URL =
+"YOUR_AUTHORIZED_M3U8_URL";
+
+
+/* ==========================================
+   PLYR
+========================================== */
+
+let player = null;
+
+let hls = null;
+
+
+/* ==========================================
+   SETUP PLYR
+========================================== */
 
 function setupPlayer(){
-  plyrPlayer=new Plyr(video,{
-    autoplay:false,
-    clickToPlay:true,
-    controls:[
-      "play","progress","current-time","mute","volume","settings","fullscreen"
-    ],
-    settings:["quality"]
-  });
+
+    player = new Plyr(
+        video,
+        {
+
+            autoplay:false,
+
+            clickToPlay:true,
+
+            controls:[
+
+                "play",
+
+                "progress",
+
+                "current-time",
+
+                "mute",
+
+                "volume",
+
+                "settings",
+
+                "fullscreen"
+
+            ],
+
+            settings:[
+                "quality"
+            ]
+
+        }
+    );
+
 }
 
-async function startWithSoundAndFullscreen(){
-  /*
-   * This click is a user gesture, so browsers generally allow
-   * unmuting and fullscreen here when the source/player permits it.
-   */
-  try{
-    video.muted=false;
-    video.volume=1;
 
-    await video.play();
+/* ==========================================
+   LOAD STREAM
+========================================== */
 
-    if(!document.fullscreenElement){
-      if(wrap.requestFullscreen){
-        await wrap.requestFullscreen();
-      }else if(wrap.webkitRequestFullscreen){
-        wrap.webkitRequestFullscreen();
-      }
+function loadStream(){
+
+    if(
+        STREAM_URL ===
+        "YOUR_AUTHORIZED_M3U8_URL"
+    ){
+
+        loading.textContent =
+        "Add your authorized M3U8 URL";
+
+        setupPlayer();
+
+        return;
+
     }
-  }catch(err){
-    console.log("Playback/fullscreen:",err);
-    /* If autoplay/fullscreen is restricted, the normal player controls remain usable. */
-  }
-}
 
-fullBtn.addEventListener("click",startWithSoundAndFullscreen);
 
-video.addEventListener("loadeddata",hideHint);
-video.addEventListener("playing",hideHint);
+    if(
+        Hls.isSupported()
+    ){
 
-if(SOURCE_URL==="YOUR_AUTHORIZED_M3U8_URL"){
-  hint.innerHTML="Add your authorized M3U8 stream URL in the code.";
-  setupPlayer();
-}else if(Hls.isSupported()){
-  const hls=new Hls();
-  hls.loadSource(SOURCE_URL);
-  hls.attachMedia(video);
+        hls =
+        new Hls({
 
-  hls.on(Hls.Events.MANIFEST_PARSED,()=>{
-    setupPlayer();
-    hideHint();
-  });
+            enableWorker:true,
 
-  hls.on(Hls.Events.ERROR,(_,data)=>{
-    if(data.fatal){
-      hint.classList.remove("hide");
-      hint.textContent="Stream unavailable.";
+            lowLatencyMode:true
+
+        });
+
+
+        hls.loadSource(
+            STREAM_URL
+        );
+
+
+        hls.attachMedia(
+            video
+        );
+
+
+        hls.on(
+            Hls.Events.MANIFEST_PARSED,
+            function(){
+
+                setupPlayer();
+
+                loading.classList.add(
+                    "hide"
+                );
+
+            }
+        );
+
+
+        hls.on(
+            Hls.Events.ERROR,
+            function(
+                event,
+                data
+            ){
+
+                if(
+                    data.fatal
+                ){
+
+                    loading.textContent =
+                    "Stream unavailable";
+
+                    loading.classList.remove(
+                        "hide"
+                    );
+
+                }
+
+            }
+        );
+
     }
-  });
-}else if(video.canPlayType("application/vnd.apple.mpegurl")){
-  video.src=SOURCE_URL;
-  video.addEventListener("loadedmetadata",()=>{
-    setupPlayer();
-    hideHint();
-  });
-}else{
-  hint.textContent="This browser does not support HLS playback.";
-  setupPlayer();
+
+
+    else if(
+        video.canPlayType(
+            "application/vnd.apple.mpegurl"
+        )
+    ){
+
+        video.src =
+        STREAM_URL;
+
+
+        video.addEventListener(
+            "loadedmetadata",
+            function(){
+
+                setupPlayer();
+
+                loading.classList.add(
+                    "hide"
+                );
+
+            }
+        );
+
+    }
+
+
+    else{
+
+        loading.textContent =
+        "HLS is not supported";
+
+    }
+
 }
+
+
+/* ==========================================
+   FULLSCREEN + UNMUTE
+========================================== */
+
+async function
+fullscreenAndUnmute(){
+
+    try{
+
+        /*
+         * This function runs because
+         * the user clicked the button.
+         *
+         * Browser user-gesture policies
+         * therefore allow sound/playback
+         * in many cases.
+         */
+
+        video.muted =
+        false;
+
+        video.volume =
+        1;
+
+
+        /*
+         * Start playback
+         */
+
+        await video.play();
+
+
+        /*
+         * Fullscreen
+         */
+
+        if(
+            !document.fullscreenElement
+        ){
+
+            if(
+                playerWrap.requestFullscreen
+            ){
+
+                await
+                playerWrap.requestFullscreen();
+
+            }
+
+            else if(
+                playerWrap.webkitRequestFullscreen
+            ){
+
+                playerWrap.webkitRequestFullscreen();
+
+            }
+
+        }
+
+    }
+
+    catch(error){
+
+        console.log(
+            "Playback/fullscreen:",
+            error
+        );
+
+    }
+
+}
+
+
+/* ==========================================
+   BUTTON
+========================================== */
+
+fullscreenButton.addEventListener(
+    "click",
+    function(event){
+
+        event.preventDefault();
+
+        event.stopPropagation();
+
+        fullscreenAndUnmute();
+
+    }
+);
+
+
+/* ==========================================
+   FULLSCREEN ICON
+========================================== */
+
+function updateFullscreenIcon(){
+
+    if(
+        document.fullscreenElement ||
+        document.webkitFullscreenElement
+    ){
+
+        fullscreenButton.textContent =
+        "✕";
+
+    }
+
+    else{
+
+        fullscreenButton.textContent =
+        "⛶";
+
+    }
+
+}
+
+
+document.addEventListener(
+    "fullscreenchange",
+    updateFullscreenIcon
+);
+
+
+document.addEventListener(
+    "webkitfullscreenchange",
+    updateFullscreenIcon
+);
+
+
+/* ==========================================
+   VIDEO EVENTS
+========================================== */
+
+video.addEventListener(
+    "playing",
+    function(){
+
+        loading.classList.add(
+            "hide"
+        );
+
+    }
+);
+
+
+video.addEventListener(
+    "waiting",
+    function(){
+
+        loading.textContent =
+        "Buffering...";
+
+        loading.classList.remove(
+            "hide"
+        );
+
+    }
+);
+
+
+video.addEventListener(
+    "canplay",
+    function(){
+
+        loading.classList.add(
+            "hide"
+        );
+
+    }
+);
+
+
+/* ==========================================
+   START
+========================================== */
+
+loadStream();
+
+
 </script>
+
 </body>
 </html>
