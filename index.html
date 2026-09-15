@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width,
+                   initial-scale=1.0,
+                   maximum-scale=1.0,
+                   user-scalable=no">
+
+    <title>Prince Raj Live</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="player">
+        <iframe
+            id="liveFrame"
+            allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
+            allowfullscreen
+            webkitallowfullscreen
+            scrolling="no">
+        </iframe>
+    </div>
+
+    <script>
+        const params = new URLSearchParams(
+            window.location.search
+        );
+
+        const iframeLink = params.get("id");
+
+        const iframe =
+            document.getElementById("liveFrame");
+
+        if (iframeLink) {
+            iframe.src = iframeLink;
+        } else {
+            iframe.src =
+                "https://crickettv.site/willow";
+        }
+    </script>
+
+</body>
+</html>
