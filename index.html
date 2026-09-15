@@ -1,372 +1,236 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
-    <meta name="viewport"
-          content="width=device-width,
-                   initial-scale=1.0,
-                   maximum-scale=1.0,
-                   user-scalable=no">
+<title>Prince Raj Live</title>
 
-    <title>Prince Raj Live</title>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-    <style>
+html,
+body {
+    width: 100%;
+    height: 100%;
+    background: #000;
+    overflow: hidden;
+}
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+.player {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    background: #000;
+    overflow: hidden;
+}
 
-        html,
-        body {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background: #000;
-        }
+/* SOURCE */
+#liveFrame {
+    position: absolute;
+    inset: 0;
 
-        body {
-            font-family: Arial, sans-serif;
-        }
+    width: 100%;
+    height: 100%;
 
-        /* FULL SCREEN PLAYER */
+    border: 0;
+    display: block;
 
-        .player {
-            position: fixed;
+    background: #000;
+}
 
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+/* OUR FULLSCREEN BUTTON */
+.fullscreen-btn {
+    position: absolute;
 
-            width: 100vw;
-            height: 100vh;
-            height: 100dvh;
+    right: 18px;
+    bottom: 18px;
 
-            background: #000;
+    width: 48px;
+    height: 48px;
 
-            overflow: hidden;
-        }
+    border: 1px solid rgba(255,255,255,.25);
+    border-radius: 12px;
 
-        /* IFRAME */
+    background: rgba(0,0,0,.75);
+    color: #fff;
 
-        #liveFrame {
-            position: absolute;
+    font-size: 24px;
 
-            top: 0;
-            left: 0;
+    cursor: pointer;
 
-            width: 100%;
-            height: 100%;
+    z-index: 9999;
 
-            border: none;
-            outline: none;
+    backdrop-filter: blur(8px);
 
-            background: #000;
+    transition: .2s;
+}
 
-            display: block;
-        }
+.fullscreen-btn:hover {
+    background: rgba(20,20,20,.95);
+    transform: scale(1.06);
+}
 
-        /* LOADING */
+/* SMALL BRAND */
+.brand {
+    position: absolute;
 
-        .loading {
-            position: absolute;
+    top: 15px;
+    left: 18px;
 
-            top: 50%;
-            left: 50%;
+    z-index: 9999;
 
-            transform: translate(-50%, -50%);
+    color: rgba(255,255,255,.8);
 
-            color: white;
+    font-size: 13px;
+    font-weight: 600;
 
-            font-size: 15px;
+    background: rgba(0,0,0,.55);
 
-            background: rgba(0, 0, 0, 0.75);
+    padding: 7px 11px;
 
-            padding: 12px 20px;
+    border-radius: 8px;
 
-            border-radius: 10px;
+    pointer-events: none;
+}
 
-            z-index: 5;
+/* HIDE OUR BUTTON WHEN FULLSCREEN */
+.player:fullscreen .fullscreen-btn {
+    bottom: 22px;
+    right: 22px;
+}
 
-            pointer-events: none;
-        }
+.player:-webkit-full-screen .fullscreen-btn {
+    bottom: 22px;
+    right: 22px;
+}
 
-        .hidden {
-            display: none;
-        }
+/* MOBILE */
+@media (max-width: 600px) {
 
-        /* ERROR */
+    .fullscreen-btn {
+        width: 44px;
+        height: 44px;
 
-        .error {
-            position: absolute;
+        right: 12px;
+        bottom: 12px;
 
-            top: 50%;
-            left: 50%;
+        font-size: 21px;
+    }
 
-            transform: translate(-50%, -50%);
-
-            width: 90%;
-            max-width: 450px;
-
-            text-align: center;
-
-            color: white;
-
-            background: #111;
-
-            border: 1px solid #292929;
-
-            padding: 25px;
-
-            border-radius: 14px;
-
-            z-index: 10;
-        }
-
-        .error h2 {
-            margin-bottom: 8px;
-            color: #ff4040;
-        }
-
-        .error p {
-            color: #aaa;
-            font-size: 14px;
-            line-height: 1.5;
-        }
-
-        /* MOBILE */
-
-        @media (max-width: 600px) {
-
-            .player {
-                width: 100vw;
-                height: 100dvh;
-            }
-
-            #liveFrame {
-                width: 100vw;
-                height: 100dvh;
-            }
-
-        }
-
-    </style>
+    .brand {
+        top: 10px;
+        left: 10px;
+        font-size: 11px;
+    }
+}
+</style>
 </head>
-
 
 <body>
 
-    <div class="player">
+<div class="player" id="player">
 
-        <!-- Loading message -->
-
-        <div
-            id="loading"
-            class="loading">
-            Loading Live Stream...
-        </div>
-
-
-        <!-- Video / Embed -->
-
-        <iframe
-            id="liveFrame"
-
-            allow="
-                autoplay;
-                encrypted-media;
-                fullscreen;
-                picture-in-picture
-            "
-
-            allowfullscreen
-
-            webkitallowfullscreen
-            mozallowfullscreen
-
-            scrolling="no">
-
-        </iframe>
-
-
-        <!-- Error -->
-
-        <div
-            id="error"
-            class="error hidden">
-
-            <h2>Unable to Load</h2>
-
-            <p>
-                No valid stream/embed URL was provided,
-                or the source does not allow embedding.
-            </p>
-
-        </div>
-
+    <div class="brand">
+        Prince Raj Live
     </div>
 
+    <iframe
+        id="liveFrame"
+        src="https://teamroifrmp3.pages.dev/?id=https://allrounder3-0.pages.dev/cricket/sony-3"
+        allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
+        allowfullscreen
+        webkitallowfullscreen
+        mozallowfullscreen
+        scrolling="no">
+    </iframe>
 
-    <script>
+    <!-- OUR OWN FULLSCREEN BUTTON -->
+    <button
+        class="fullscreen-btn"
+        id="fullscreenBtn"
+        title="Fullscreen">
+        ⛶
+    </button>
 
-        /*
-        ==========================================
-        GET SOURCE FROM ?id=
-        ==========================================
-        */
-
-        const params =
-            new URLSearchParams(
-                window.location.search
-            );
-
-
-        const iframeLink =
-            params.get("id");
-
-
-        const iframe =
-            document.getElementById(
-                "liveFrame"
-            );
+</div>
 
 
-        const loading =
-            document.getElementById(
-                "loading"
-            );
+<script>
+
+const player =
+    document.getElementById("player");
+
+const fullscreenBtn =
+    document.getElementById("fullscreenBtn");
 
 
-        const error =
-            document.getElementById(
-                "error"
-            );
+fullscreenBtn.addEventListener("click", async function(e) {
 
+    e.preventDefault();
+    e.stopPropagation();
 
-        /*
-        ==========================================
-        LOAD SOURCE
-        ==========================================
-        */
+    try {
 
-        if (iframeLink) {
+        if (!document.fullscreenElement) {
 
-            try {
+            if (player.requestFullscreen) {
 
-                const decodedURL =
-                    decodeURIComponent(
-                        iframeLink
-                    );
+                await player.requestFullscreen();
 
+            } else if (player.webkitRequestFullscreen) {
 
-                /*
-                Basic URL validation
-                */
-
-                const url =
-                    new URL(decodedURL);
-
-
-                /*
-                Only HTTP/HTTPS sources
-                */
-
-                if (
-                    url.protocol === "https:" ||
-                    url.protocol === "http:"
-                ) {
-
-                    iframe.src =
-                        decodedURL;
-
-
-                    iframe.onload =
-                        function () {
-
-                            loading.classList
-                                .add("hidden");
-
-                        };
-
-
-                } else {
-
-                    loading.classList
-                        .add("hidden");
-
-                    error.classList
-                        .remove("hidden");
-
-                }
-
-
-            } catch (e) {
-
-                loading.classList
-                    .add("hidden");
-
-                error.classList
-                    .remove("hidden");
+                player.webkitRequestFullscreen();
 
             }
 
         } else {
 
-            loading.classList
-                .add("hidden");
+            if (document.exitFullscreen) {
 
-            error.classList
-                .remove("hidden");
+                await document.exitFullscreen();
+
+            }
 
         }
 
+    } catch (error) {
 
-        /*
-        ==========================================
-        FULLSCREEN
-        ==========================================
-        */
-
-        window.addEventListener(
-            "message",
-            function(event) {
-
-                /*
-                This doesn't access the
-                iframe's internal DOM.
-                It only supports sources that
-                explicitly communicate with
-                the parent page.
-                */
-
-                if (
-                    event.data ===
-                    "requestFullscreen"
-                ) {
-
-                    const player =
-                        document.querySelector(
-                            ".player"
-                        );
-
-
-                    if (
-                        player.requestFullscreen
-                    ) {
-
-                        player.requestFullscreen();
-
-                    }
-
-                }
-
-            }
+        console.log(
+            "Fullscreen error:",
+            error
         );
 
-    </script>
+    }
+
+});
+
+
+document.addEventListener(
+    "fullscreenchange",
+    function() {
+
+        if (document.fullscreenElement) {
+
+            fullscreenBtn.textContent = "✕";
+
+        } else {
+
+            fullscreenBtn.textContent = "⛶";
+
+        }
+
+    }
+);
+
+</script>
 
 </body>
 </html>
