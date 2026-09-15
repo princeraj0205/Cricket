@@ -2,8 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Prince Raj Live</title>
+
+<meta name="viewport"
+      content="width=device-width,
+      initial-scale=1.0,
+      maximum-scale=1.0,
+      user-scalable=no">
+
+<title>Princexmahto • Live</title>
 
 <style>
 *{
@@ -17,80 +23,317 @@ html,body{
     height:100%;
     overflow:hidden;
     background:#000;
+    font-family:Inter,Arial,sans-serif;
 }
 
-body{
-    font-family:Arial,Helvetica,sans-serif;
-}
+/* =========================
+   MAIN
+========================= */
 
-.player{
+.live-container{
     position:fixed;
     inset:0;
-    width:100vw;
-    height:100vh;
-    height:100dvh;
+    width:100%;
+    height:100%;
     background:#000;
     overflow:hidden;
 }
 
+/* =========================
+   VIDEO
+========================= */
+
 #liveFrame{
     position:absolute;
     inset:0;
+
     width:100%;
     height:100%;
+
     border:0;
     outline:0;
+
     background:#000;
+
     display:block;
 }
 
-.loading{
+/* =========================
+   DARK CINEMATIC OVERLAY
+========================= */
+
+.overlay{
     position:absolute;
-    left:50%;
-    top:50%;
-    transform:translate(-50%,-50%);
-    z-index:20;
-    color:#fff;
-    background:rgba(0,0,0,.78);
-    padding:12px 18px;
-    border-radius:10px;
-    font-size:14px;
+    inset:0;
+
     pointer-events:none;
-    transition:.25s;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(0,0,0,.55) 0%,
+            transparent 18%,
+            transparent 75%,
+            rgba(0,0,0,.65) 100%
+        );
+
+    z-index:5;
 }
 
-.loading.hidden{
+/* =========================
+   BRAND
+========================= */
+
+.brand{
+    position:absolute;
+    top:22px;
+    left:24px;
+
+    z-index:20;
+
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    padding:9px 14px;
+
+    border:1px solid rgba(255,255,255,.18);
+    border-radius:14px;
+
+    background:rgba(0,0,0,.42);
+
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+
+    color:#fff;
+
+    box-shadow:
+        0 10px 35px rgba(0,0,0,.35);
+}
+
+.brand-dot{
+    width:9px;
+    height:9px;
+
+    border-radius:50%;
+
+    background:#ff1744;
+
+    box-shadow:
+        0 0 12px #ff1744;
+
+    animation:pulse 1.5s infinite;
+}
+
+.brand-text{
+    font-size:14px;
+    font-weight:700;
+    letter-spacing:.4px;
+}
+
+.live-text{
+    font-size:11px;
+    font-weight:700;
+    opacity:.7;
+    letter-spacing:1px;
+}
+
+@keyframes pulse{
+    0%,100%{
+        opacity:1;
+        transform:scale(1);
+    }
+    50%{
+        opacity:.45;
+        transform:scale(.75);
+    }
+}
+
+/* =========================
+   CENTER LOADER
+========================= */
+
+.loader{
+    position:absolute;
+
+    left:50%;
+    top:50%;
+
+    transform:translate(-50%,-50%);
+
+    z-index:30;
+
+    color:#fff;
+
+    padding:14px 20px;
+
+    border-radius:15px;
+
+    background:rgba(0,0,0,.7);
+
+    border:1px solid rgba(255,255,255,.12);
+
+    backdrop-filter:blur(12px);
+
+    font-size:13px;
+    letter-spacing:.3px;
+
+    transition:
+        opacity .4s,
+        visibility .4s;
+}
+
+.loader.hidden{
     opacity:0;
     visibility:hidden;
 }
 
+/* =========================
+   FULLSCREEN BUTTON
+========================= */
+
 .fullscreen-btn{
     position:absolute;
-    right:18px;
-    bottom:18px;
-    z-index:9999;
-    width:48px;
-    height:48px;
-    border:1px solid rgba(255,255,255,.25);
-    border-radius:12px;
-    background:rgba(0,0,0,.78);
-    color:#fff;
-    font-size:24px;
+
+    right:22px;
+    bottom:22px;
+
+    z-index:50;
+
+    width:58px;
+    height:58px;
+
+    border:none;
+    outline:none;
+
+    border-radius:18px;
+
     cursor:pointer;
-    backdrop-filter:blur(8px);
+
+    color:#fff;
+
+    font-size:25px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,.18),
+            rgba(255,255,255,.06)
+        );
+
+    border:1px solid rgba(255,255,255,.25);
+
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+
+    box-shadow:
+        0 12px 40px rgba(0,0,0,.5),
+        inset 0 1px rgba(255,255,255,.15);
+
+    transition:
+        transform .2s,
+        background .2s,
+        box-shadow .2s;
 }
 
 .fullscreen-btn:hover{
-    background:rgba(30,30,30,.95);
+    transform:scale(1.08);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,.28),
+            rgba(255,255,255,.10)
+        );
+
+    box-shadow:
+        0 15px 45px rgba(0,0,0,.6),
+        0 0 25px rgba(255,255,255,.08);
 }
 
+.fullscreen-btn:active{
+    transform:scale(.92);
+}
+
+/* =========================
+   BOTTOM BRAND
+========================= */
+
+.bottom-brand{
+    position:absolute;
+
+    left:24px;
+    bottom:25px;
+
+    z-index:20;
+
+    color:rgba(255,255,255,.65);
+
+    font-size:11px;
+
+    letter-spacing:1px;
+
+    pointer-events:none;
+}
+
+/* =========================
+   FULLSCREEN MODE
+========================= */
+
+.live-container:fullscreen{
+    width:100vw;
+    height:100vh;
+}
+
+.live-container:-webkit-full-screen{
+    width:100vw;
+    height:100vh;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
 @media(max-width:600px){
+
+    .brand{
+        top:12px;
+        left:12px;
+
+        padding:8px 11px;
+
+        border-radius:12px;
+    }
+
+    .brand-text{
+        font-size:12px;
+    }
+
+    .live-text{
+        font-size:9px;
+    }
+
     .fullscreen-btn{
-        width:44px;
-        height:44px;
+        width:50px;
+        height:50px;
+
         right:12px;
         bottom:12px;
-        font-size:21px;
+
+        border-radius:15px;
+
+        font-size:22px;
+    }
+
+    .bottom-brand{
+        left:13px;
+        bottom:18px;
+
+        font-size:9px;
     }
 }
 </style>
@@ -98,15 +341,13 @@ body{
 
 <body>
 
-<div class="player" id="player">
+<div class="live-container" id="player">
 
-    <div class="loading" id="loading">
-        Loading Live Stream...
-    </div>
-
+    <!-- VIDEO -->
     <iframe
         id="liveFrame"
         src="https://allrounder3-0.pages.dev/cricket/sony-3"
+        title="Princexmahto Live"
         allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
         allowfullscreen
         webkitallowfullscreen
@@ -114,52 +355,215 @@ body{
         scrolling="no">
     </iframe>
 
+
+    <!-- CINEMATIC OVERLAY -->
+    <div class="overlay"></div>
+
+
+    <!-- BRAND -->
+    <div class="brand">
+
+        <span class="brand-dot"></span>
+
+        <span class="brand-text">
+            princexmahto
+        </span>
+
+        <span class="live-text">
+            LIVE
+        </span>
+
+    </div>
+
+
+    <!-- LOADING -->
+    <div class="loader" id="loader">
+        Connecting to live stream...
+    </div>
+
+
+    <!-- FULLSCREEN -->
     <button
         class="fullscreen-btn"
         id="fullscreenBtn"
         type="button"
-        aria-label="Fullscreen"
-        title="Fullscreen">
+        aria-label="Fullscreen">
+
         ⛶
+
     </button>
+
+
+    <!-- BOTTOM BRAND -->
+    <div class="bottom-brand">
+        PRINXMAHTO • LIVE
+    </div>
 
 </div>
 
+
 <script>
-const player = document.getElementById("player");
-const iframe = document.getElementById("liveFrame");
-const loading = document.getElementById("loading");
-const fullscreenBtn = document.getElementById("fullscreenBtn");
+
+/* =========================
+   ELEMENTS
+========================= */
+
+const player =
+    document.getElementById("player");
+
+const iframe =
+    document.getElementById("liveFrame");
+
+const loader =
+    document.getElementById("loader");
+
+const fullscreenBtn =
+    document.getElementById("fullscreenBtn");
+
+
+/* =========================
+   LOADING
+========================= */
 
 iframe.addEventListener("load", () => {
-    loading.classList.add("hidden");
+
+    setTimeout(() => {
+
+        loader.classList.add("hidden");
+
+    }, 700);
+
 });
 
-fullscreenBtn.addEventListener("click", async (event) => {
-    event.preventDefault();
-    event.stopPropagation();
 
-    try {
-        if (!document.fullscreenElement) {
-            if (player.requestFullscreen) {
+/* =========================
+   FULLSCREEN
+========================= */
+
+async function goFullscreen(){
+
+    try{
+
+        if(
+            !document.fullscreenElement &&
+            !document.webkitFullscreenElement
+        ){
+
+            if(player.requestFullscreen){
+
                 await player.requestFullscreen();
-            } else if (player.webkitRequestFullscreen) {
-                player.webkitRequestFullscreen();
-            }
-        } else {
-            if (document.exitFullscreen) {
-                await document.exitFullscreen();
-            }
-        }
-    } catch (error) {
-        console.error("Fullscreen error:", error);
-    }
-});
 
-document.addEventListener("fullscreenchange", () => {
-    fullscreenBtn.textContent =
-        document.fullscreenElement ? "✕" : "⛶";
-});
+            }
+            else if(player.webkitRequestFullscreen){
+
+                player.webkitRequestFullscreen();
+
+            }
+
+        }
+        else{
+
+            if(document.exitFullscreen){
+
+                await document.exitFullscreen();
+
+            }
+            else if(document.webkitExitFullscreen){
+
+                document.webkitExitFullscreen();
+
+            }
+
+        }
+
+    }
+    catch(error){
+
+        console.log(
+            "Fullscreen error:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================
+   BUTTON
+========================= */
+
+fullscreenBtn.addEventListener(
+    "click",
+    function(event){
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        goFullscreen();
+
+    }
+);
+
+
+/* =========================
+   ICON
+========================= */
+
+function updateIcon(){
+
+    if(
+        document.fullscreenElement ||
+        document.webkitFullscreenElement
+    ){
+
+        fullscreenBtn.innerHTML = "✕";
+
+    }
+    else{
+
+        fullscreenBtn.innerHTML = "⛶";
+
+    }
+
+}
+
+
+document.addEventListener(
+    "fullscreenchange",
+    updateIcon
+);
+
+document.addEventListener(
+    "webkitfullscreenchange",
+    updateIcon
+);
+
+
+/* =========================
+   KEYBOARD
+========================= */
+
+document.addEventListener(
+    "keydown",
+    function(event){
+
+        if(event.key === "f" ||
+           event.key === "F"){
+
+            goFullscreen();
+
+        }
+
+        if(event.key === "Escape"){
+
+            updateIcon();
+
+        }
+
+    }
+);
+
 </script>
 
 </body>
